@@ -52,9 +52,11 @@ bot.application_command(:train) do |event|
 	    is_img = true
 	  end
 	end
-	
-	event.respond(content: desc)
-	event.send_message(content: img)
+
+	event.respond(content: img)
+	event.send_embed() do |embed|
+    embed.description = desc
+  end
 end
 
 bot.run
