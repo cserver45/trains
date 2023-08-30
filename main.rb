@@ -23,7 +23,7 @@ require 'nokogiri'
 require 'configatron'
 require_relative 'config.rb'
 
-bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: configatron.clientid
+bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: configatron.clientid, intents: :unprivileged
 
 uri = "https://www.railpictures.net/photo/"
 
@@ -53,10 +53,17 @@ bot.application_command(:train) do |event|
 	  end
 	end
 
-	event.respond(content: img)
-	event.send_embed() do |embed|
+  # why does discordrb make it so hard to make a simple embed?
+  # in something like discord.py, its 2 lines to do what ive done here
+  # makes no sense to me, but oh well
+  builder = Discordrb::Webhooks::Builder.new
+  builder.add_embed do |embed|
     embed.description = desc
+    embed.color = "#57F287"
+    embed.image = Discordrb::Webhooks::EmbedImage.new(url: img)
   end
+  
+	event.respond(embeds: builder.embeds.map(&:to_hash))
 end
 
 bot.run
