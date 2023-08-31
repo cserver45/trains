@@ -41,8 +41,11 @@ bot.application_command(:train) do |event|
   doc = Nokogiri::HTML(response.body)
   while is_img == false do
     begin
-      img = doc.at_xpath('//meta[@property ="og:image"]')['content']
-      desc = doc.at_xpath('//meta[@name ="description"]')['content']
+      img = doc.at_xpath('//meta[@property="og:image"]')['content']
+      desc = doc.at_xpath('//meta[@name="description"]')['content']
+      photographer = doc.at_xpath('/html/body/center/center/table[2]/tr[last()]/td/center/font[last()]')
+      photographer_extracted = photographer.to_s.split('<a').first.split(">").last
+      puts photographer_extracted
     rescue NoMethodError
       # need to get a new number, else its an infinite loop
       img_number = rand 1..836514
@@ -54,13 +57,15 @@ bot.application_command(:train) do |event|
 	end
 
   # why does discordrb make it so hard to make a simple embed?
-  # in something like discord.py, its 2 lines to do what ive done here
+  # in something like discord.py, it's 2 lines to do what i've done here
   # makes no sense to me, but oh well
   builder = Discordrb::Webhooks::Builder.new
   builder.add_embed do |embed|
     embed.description = desc
     embed.color = "#57F287"
     embed.image = Discordrb::Webhooks::EmbedImage.new(url: img)
+    embed.url = uri + img_number.to_s
+    embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: photographer_extracted)
   end
   
 	event.respond(embeds: builder.embeds.map(&:to_hash))
