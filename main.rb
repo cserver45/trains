@@ -26,14 +26,14 @@ require_relative 'config/config.rb'
 
 bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: configatron.clientid, intents: :unprivileged
 
-uri = "https://www.railpictures.net/photo/"
+uri = 'https://www.railpictures.net/photo/'
 
 # For registering the commands on startup
 bot.register_application_command(:train, 'Get a random train photo.')
 
 # To show the licence disclaimer
-puts "Copyright (C) 2023 cserver45"
-puts "License details are in main.rb and LICENSE"
+puts 'Copyright (C) 2023 cserver45'
+puts 'License details are in main.rb and LICENSE'
 
 bot.application_command(:train) do |event|
   img_number = rand 1..836514
@@ -51,10 +51,10 @@ bot.application_command(:train) do |event|
       img_number = rand 1..836514
       response = HTTParty.get(uri + img_number.to_s)
       doc = Nokogiri::HTML(response.body)
-	  else
-	    is_img = true
-	  end
-	end
+    else
+      is_img = true
+    end
+  end
 
   # why does discordrb make it so hard to make a simple embed?
   # in something like discord.py, it's 2 lines to do what i've done here
@@ -68,8 +68,8 @@ bot.application_command(:train) do |event|
     embed.url = uri + img_number.to_s
     embed.footer = Discordrb::Webhooks::EmbedFooter.new(text: photographer_extracted)
   end
-  
-	event.respond(embeds: builder.embeds.map(&:to_hash))
+
+  event.respond(embeds: builder.embeds.map(&:to_hash))
 end
 
 bot.run
