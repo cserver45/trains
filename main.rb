@@ -36,7 +36,7 @@ puts 'Copyright (C) 2023 cserver45'
 puts 'License details are in main.rb and LICENSE'
 
 bot.application_command(:train) do |event|
-  img_number = rand 1..836514
+  img_number = rand 1..836_514
   is_img = false
   response = HTTParty.get(uri + img_number.to_s)
   doc = Nokogiri::HTML(response.body)
