@@ -1,15 +1,26 @@
-FROM ruby:3.2-bookworm
+# The "builder" image will build nokogiri
+FROM ruby:3.2-alpine AS builder
 
-# throw errors if Gemfile has been modified since Gemfile.lock
-RUN bundle config --global frozen 1
+# Nokogiri's build dependencies
+RUN apk add --update \
+  build-base \
+  libxml2-dev \
+  libxslt-dev
+
+RUN echo 'source "https://rubygems.org"; gem "nokogiri"' > Gemfile
+
+RUN bundle install
+
+# The final image: we start clean
+FROM ruby:3.2-alpine
+
+# We copy over the entire gems directory for our builder image, containing the already built artifact
+COPY --from=builder /usr/local/bundle/ /usr/local/bundle/
 
 WORKDIR /app
 
-COPY Gemfile Gemfile.lock ./
-RUN bundle install
-
 COPY . .
 
-CMD ["./main.rb"]
+CMD ruby main.rb
 
 VOLUME ["/app/config"]
