@@ -7,7 +7,7 @@ RUN apk add --update \
   libxml2-dev \
   libxslt-dev
 
-RUN echo 'source "https://rubygems.org"; gem "nokogiri"' > Gemfile
+COPY Gemfile Gemfile
 
 RUN bundle install
 
