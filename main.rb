@@ -22,7 +22,7 @@ require 'discordrb'
 require 'httparty'
 require 'nokogiri'
 require 'configatron'
-require_relative 'config/config.rb'
+require_relative 'config/config'
 
 bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: configatron.clientid, intents: :unprivileged
 
@@ -45,10 +45,10 @@ bot.application_command(:train) do |event|
       img = doc.at_xpath('//meta[@property="og:image"]')['content']
       desc = doc.at_xpath('//meta[@name="description"]')['content']
       photographer = doc.at_xpath('/html/body/center/center/table[2]/tr[last()]/td/center/font[last()]')
-      photographer_extracted = photographer.to_s.split('<a').first.split(">").last
+      photographer_extracted = photographer.to_s.split('<a').first.split('>').last
     rescue NoMethodError
       # need to get a new number, else its an infinite loop
-      img_number = rand 1..836514
+      img_number = rand 1..836_514
       response = HTTParty.get(uri + img_number.to_s)
       doc = Nokogiri::HTML(response.body)
     else
@@ -56,13 +56,10 @@ bot.application_command(:train) do |event|
     end
   end
 
-  # why does discordrb make it so hard to make a simple embed?
-  # in something like discord.py, it's 2 lines to do what i've done here
-  # makes no sense to me, but oh well
   builder = Discordrb::Webhooks::Builder.new
   builder.add_embed do |embed|
     embed.description = desc
-    embed.color = "#57F287"
+    embed.color = '#57F287'
     embed.timestamp = Time.now
     embed.image = Discordrb::Webhooks::EmbedImage.new(url: img)
     embed.url = uri + img_number.to_s
