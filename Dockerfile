@@ -10,4 +10,6 @@ RUN bundle install
 
 COPY . .
 
-CMD ["ruby" "main.rb"]
+CMD ["./main.rb"]
+
+VOLUME ["/app/config"]
