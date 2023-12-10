@@ -22,7 +22,7 @@ require 'discordrb'
 require 'httparty'
 require 'nokogiri'
 require 'configatron'
-require_relative 'config.rb'
+require_relative 'config/config.rb'
 
 bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: configatron.clientid, intents: :unprivileged
 
