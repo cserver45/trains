@@ -35,7 +35,7 @@ bot.register_application_command(:train, 'Get a random train photo.')
 puts 'Copyright (C) 2023 cserver45'
 puts 'License details are in main.rb and LICENSE'
 
-bot.application_command(:train) do |event|
+bot.application_command(:train, description: "Fetches a random train image.") do |event|
   img_number = rand 1..836_514
   is_img = false
   response = HTTParty.get(uri + img_number.to_s)
