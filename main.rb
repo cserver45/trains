@@ -29,13 +29,18 @@ bot = Discordrb::Commands::CommandBot.new token: configatron.token, client_id: c
 uri = 'https://www.railpictures.net/photo/'
 
 # For registering the commands on startup
-bot.register_application_command(:train, 'Get a random train photo.')
+bot.register_application_command(:train, 'Fetches a random train image.')
+bot.register_application_command(:ping, 'Get the ping time for the bot.')
 
 # To show the licence disclaimer
 puts 'Copyright (C) 2023 cserver45'
 puts 'License details are in main.rb and LICENSE'
 
-bot.application_command(:train, description: "Fetches a random train image.") do |event|
+bot.ready do
+  bot.watching = 'Trains.'
+end
+
+bot.application_command(:train, description: 'Fetches a random train image.') do |event|
   img_number = rand 1..836_514
   is_img = false
   response = HTTParty.get(uri + img_number.to_s)
