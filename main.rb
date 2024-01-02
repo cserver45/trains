@@ -30,7 +30,7 @@ uri = 'https://www.railpictures.net/photo/'
 
 # For registering the commands on startup
 bot.register_application_command(:train, 'Fetches a random train image.')
-bot.register_application_command(:ping, 'Get the ping time for the bot.')
+bot.register_application_command(:status, 'Get the status of the bot.')
 
 # To show the licence disclaimer
 puts 'Copyright (C) 2023 cserver45'
@@ -72,6 +72,17 @@ bot.application_command(:train, description: 'Fetches a random train image.') do
   end
 
   event.respond(embeds: builder.embeds.map(&:to_hash))
+end
+
+bot.application_command(:status, description: 'Get the status of the bot.') do |event|
+  builder = Discordrb::Webhooks::Builder.new
+  builder.add_embed do |embed|
+    embed.description = 'Status of the Trains Discord Bot:'
+    embed.color = '#57F287'
+    embed.timestamp = Time.now
+  end
+
+  event.respond(content: 'Not done yet...')
 end
 
 bot.run
