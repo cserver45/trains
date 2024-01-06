@@ -21,9 +21,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN groupadd -g 10001 trains && \
-   useradd -u 10000 -g trains trains \
-   && chown -R trains:trains /app
+RUN addgroup -S trains && adduser -S trains -G trains && chown -R trains:trains /app
 
 USER trains:trains
 
