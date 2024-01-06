@@ -80,9 +80,15 @@ bot.application_command(:status, description: 'Get the status of the bot.') do |
     embed.description = 'Status of the Trains Discord Bot:'
     embed.color = '#57F287'
     embed.timestamp = Time.now
+    embed.fields = [
+      {name: ':writing_hand: Author:', value: 'cserver#3402'},
+      {name: ':robot: Bot Version', value: configatron.version},
+      {name: 'Ruby info:', value: RUBY_DESCRIPTION},
+      {name: 'Discordrb version:', value: Discordrb::VERSION},
+    ]
   end
 
-  event.respond(content: 'Not done yet...')
+  event.respond(embeds: builder.embeds.map(&:to_hash))
 end
 
 bot.run
