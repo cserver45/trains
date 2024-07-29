@@ -1,6 +1,7 @@
 # Trains
 A Discord Bot written in Ruby that scrapes railpictures.net for random train photos (more to come)
 
+## Project Archived, as of 7/28/24
 
 ## Install
 
